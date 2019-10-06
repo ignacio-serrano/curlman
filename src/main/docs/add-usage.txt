@@ -1,0 +1,10 @@
+Usage: curlman.sh add [--help | <command> [<args>]]
+  --help    : Displays this help.
+  <command> : Any single one of the commands below. To know more about a 
+              specific command and its arguments, type 
+              curlman.sh add <command> --help
+
+Commands:
+  service   : Creates a service in a curlman root directory.
+  resource  : Creates a resource in a service.
+  operation : Creates an operation in a resource.

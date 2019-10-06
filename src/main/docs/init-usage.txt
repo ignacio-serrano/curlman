@@ -1,0 +1,6 @@
+Initialises a directory as a curlman root directory.
+
+Usage: curlman.sh init [--help | <directory>]
+  --help      : Displays this help.
+  <directory> : Directory to initialise. If not existent, will be created. If 
+                omitted, current directory will be initialised.

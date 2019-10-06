@@ -1,0 +1,9 @@
+Usage: curlman.sh add operation [--help | <method> [<resource path>] {--path-parameter=<path placeholder>}]
+  --help          : Displays this help.
+  <method>        : An HTTP method.
+  <resource path> : A resource path. If starting with "/", it will be treated
+                    as relative to the service base URL. If not, it will be
+                    treated as relative to the the current directory (which still
+                    can be a service directory root).
+  <path placeholder> : A chunk of your resource path that will be replaced by
+                       another string for actual requests.

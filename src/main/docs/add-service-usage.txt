@@ -1,0 +1,12 @@
+Usage: curlman.sh add service [--help | <service name> <base url> [<curlman root directory>]]
+  --help                   : Displays this help.
+  <service name>           : A name to identify the service created. It has to 
+                             be a valid directory name.
+  <base url>               : The base URL of the service. Think about it as the 
+                             prefix to be added to the path of all endpoints in
+                             this service.
+  <curlman root directory> : The curlman root directory to add the service to.
+                             If omitted, it defaults to the current directory.
+                             If a subdirectory of a curlman root directory is
+                             specified, curlman will infer the curlman root
+                             directory and use that instead.

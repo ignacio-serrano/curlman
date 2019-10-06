@@ -1,0 +1,7 @@
+url: "https://oauth2.googleapis.com/token"
+queryParams: {
+    refresh_token: ""
+    client_id: ""
+    client_secret: ""
+    grant_type: "refresh_token"
+}

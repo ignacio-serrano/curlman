@@ -1,0 +1,10 @@
+Usage: curlman.sh [--version | --help | <command> [<args>]]
+  --version : Displays the version number.
+  --help    : Displays this help.
+  <command> : Any single one of the commands below. To know more about a 
+              specific command and its arguments, type <command> --help.
+
+Commands:
+  init : Initialises a directory as a curlman root directory. This is a
+         necessary step before using any other commands.
+  add  : Creates objects in curlman trees.
