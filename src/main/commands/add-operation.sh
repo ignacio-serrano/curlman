@@ -15,10 +15,19 @@ if [[ $# -lt 1 ]]; then
     exit 1
 fi
 
-resourcePath="$1"
+httpMethod=$(echo "$1" | tr '[:lower:]' '[:upper:]')
+test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: httpMethod: «$httpMethod»"
+shift
 
-# TODO: Add support to specify the candidateDir as $2 argument (like in add-service.sh).
-# TODO: or add support to specify the service as $2 argument (like in add-service.sh).
+# TODO: Add support to specify the candidateDir as $3 argument (like in add-service.sh).
+# TODO: or add support to specify the service as $3 argument (like in add-service.sh).
+if [[ $# -ge 1 ]]; then
+    resourcePath="$1"
+    shift
+fi
+
+# TODO: Add implement resource creation on-the-fly.
+
 candidateDir="$(pwd)"
 
 currentDir="$candidateDir"
@@ -31,23 +40,16 @@ while [[ "$currentDir" != "/" ]]; do
 done
 
 if [[ -z "$serviceDir" ]]; then
-    echo "ERROR: Cannot create resource. Target directory «$candidateDir» doesn't belong to a service."
+    echo "ERROR: Cannot create operation. Target directory «$candidateDir» doesn't belong to a service."
     exit 1
 fi
-unset candidateDir
+#unset candidateDir
 
 test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: Resolved serviceDir: «$serviceDir»"
 
-if [[ "${resourcePath:0:1}" == "/" ]]; then
-    tgtDir="$serviceDir/${resourcePath#/}"
-else
-    tgtDir="$(pwd)/${resourcePath#/}"
-fi
-test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: tgtDir: «$tgtDir»"
+operationScript="$candidateDir/$httpMethod.sh"
+touch "$operationScript"
 
-$installDir/utils/safe-mkdir.sh "$tgtDir"
-exitCode=$?
-
-if [[ $exitCode -ne 0 ]]; then
-    exit $exitCode
-fi
+# Believe it or not, everything written between this command and an EOL would be
+# written to a file.
+#cat >> "$operationScript" << EOL
