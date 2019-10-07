@@ -22,6 +22,10 @@ case "$cmd" in
         $installDir/commands/add-$cmd.sh $@
         exitCode=$?
     ;;
+    'resource')
+        $installDir/commands/add-$cmd.sh $@
+        exitCode=$?
+    ;;
     *)
         echo "ERROR: Command «$cmd» does not exist."
         cat "$installDir/docs/add-usage.txt"
