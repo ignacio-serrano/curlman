@@ -39,8 +39,8 @@ fi
 
 test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: Resolved serviceDir: «$serviceDir»"
 
-operationScript="$candidateDir/$httpMethod.sh"
-touch "$operationScript"
+operationFile="$candidateDir/$httpMethod"
+touch "$operationFile"
 
 # Believe it or not, everything written between this command and an EOL would be
 # written to a file.

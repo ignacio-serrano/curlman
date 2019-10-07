@@ -35,8 +35,8 @@ if [[ $exitCode -ne 0 ]]; then
     exit 1
 fi
 
-if [[ ! -f "$tmpDir/curlman-root/github/users/GET.sh" ]]; then
-    echo "[$(basename $0)]: FAIL: curlman did not create GET.sh file «$tmpDir/curlman-root/github/users/GET.sh»."
+if [[ ! -f "$tmpDir/curlman-root/github/users/GET" ]]; then
+    echo "[$(basename $0)]: FAIL: curlman did not create GET file «$tmpDir/curlman-root/github/users/GET»."
     exit 1
 fi
 
