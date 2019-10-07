@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-scriptDir="${0%/*}"
+thisDir="${0%/*}"
 
-if [[ "${scriptDir:0:2}" == "./" ]]; then
-    scriptDir=$(pwd)/${scriptDir#./}
-elif [[ "${scriptDir:0:1}" != "/" ]]; then
-    scriptDir=$(pwd)/${scriptDir}
+if [[ "${thisDir:0:2}" == "./"]]; then
+    scriptDir=$(pwd)/${thisDir#./}
+elif [[ "${thisDir:0:1}" != "/" ]]; then
+    scriptDir=$(pwd)/${thisDir}
 fi
 test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: scriptDir: «$scriptDir»"
 
@@ -12,17 +12,17 @@ httpMethod=$(basename $0)
 httpMethod=${httpMethod%.sh}
 test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: httpMethod: «$httpMethod»"
 
-currentDir=$scriptDir
-while true; do
+currentDir=$thisDir
+while [[ "$currentDir" != "/" ]]; do
     if [[ -f "$currentDir/curlman.service.context" ]]; then
         serviceDir="$currentDir"
-        break
-    elif [[ "$currentDir" == "/" ]]; then
-        break
+        break;
     fi
-    currentDir=${currentDir%/*}
+    currentDir=$(dirname "$currentDir")
 done
 test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: Resolved serviceDir: «$serviceDir»"
+
+# TODO: Do something if serviceDir not found.
 
 while IFS='=' read -r key value; do
     test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: Resolved $key: «$value»"
