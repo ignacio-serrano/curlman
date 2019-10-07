@@ -5,8 +5,8 @@ A command line utility that enables using curl commands in more user friendly wa
 
 TODO:
 -----
-  * 
-  * 
+  * Should `curlman add resource` allow to specify path parameters?
+  * Implement `curlman add operation`.
   * 
 
 Project layout
@@ -15,8 +15,18 @@ Ignore this section for now.
   * `src`: Here it is where source code is.
     * `main`: Here it is where source code meant to be part of the application
               lives.
+      * `curlman.sh`: The application entry point.
+      * `commands`: `curlman` subcommands are all implemented in a different 
+                    script each. Here they are all of them.
+      * `docs`: At the moment, just help files that displayed to the user under
+                different circumstances.
+      * `resources`: Files that `curlman` may copy as part of its logic, but 
+                     doesn't run itself.
+      * `utils`: Scripts used by `curlman` that do not really belong to its own
+                 logic and may potentially be reused by other applications.
     * `test`: Here it is where the test scripts and other test related files 
-              live (so they are not copied when it is installed).
+              live.
+  * `test.sh`: Runs all scripts in `src/test` but those prefixed with `skip-`.
 
 Notes
 -----
