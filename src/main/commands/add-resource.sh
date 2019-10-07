@@ -23,7 +23,7 @@ candidateDir="$(pwd)"
 
 currentDir="$candidateDir"
 while [[ "$currentDir" != "/" ]]; do
-    if [[ -f "$currentDir/curlman.context" ]]; then
+    if [[ -f "$currentDir/curlman.service.context" ]]; then
         serviceDir="$currentDir"
         break;
     fi
@@ -36,14 +36,18 @@ if [[ -z "$serviceDir" ]]; then
 fi
 unset candidateDir
 
-tgtDir="$tgtDir/$serviceName"
-test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: Resolved tgtDir: «$tgtDir»"
+test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: Resolved serviceDir: «$serviceDir»"
 
-# TODO: Enable overwritting of file/directory with flag (perhaps -f).
-if [[ -e "$tgtDir" ]]; then
-    echo "ERROR: Cannot create service «$serviceName». «$tgtDir» already exists."
-    exit 1
+if [[ "${resourcePath:0:1}" == "/" ]]; then
+    tgtDir="$serviceDir/${resourcePath#/}"
+else
+    tgtDir="$(pwd)/${resourcePath#/}"
 fi
-mkdir "$tgtDir"
+test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: tgtDir: «$tgtDir»"
 
-echo "cfg_baseUrl=${baseUrl%/}" > "$tgtDir/curlman.service.context"
+$installDir/utils/safe-mkdir.sh "$tgtDir"
+exitCode=$?
+
+if [[ $exitCode -ne 0 ]]; then
+    exit $exitCode
+fi
