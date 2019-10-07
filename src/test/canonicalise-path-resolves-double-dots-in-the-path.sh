@@ -12,7 +12,7 @@ popd > /dev/null
 
 # ASSERT
 if [[ "$ret" != "$thisDir" ]]; then
-    echo "[$(basename $0)]: FAIL: canonicalise-path.sh returned «$ret». Expected «$thisDir"
+    echo "[$(basename $0)]: FAIL: canonicalise-path.sh returned «$ret». Expected «$thisDir»."
     exit 1
 fi
 

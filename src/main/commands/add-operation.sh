@@ -30,15 +30,7 @@ fi
 
 candidateDir="$(pwd)"
 
-currentDir="$candidateDir"
-while [[ "$currentDir" != "/" ]]; do
-    if [[ -f "$currentDir/curlman.service.context" ]]; then
-        serviceDir="$currentDir"
-        break;
-    fi
-    currentDir=$(dirname "$currentDir")
-done
-
+serviceDir=$($installDir/misc/resolve-service-dir.sh "$candidateDir")
 if [[ -z "$serviceDir" ]]; then
     echo "ERROR: Cannot create operation. Target directory «$candidateDir» doesn't belong to a service."
     exit 1

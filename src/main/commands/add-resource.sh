@@ -21,15 +21,7 @@ resourcePath="$1"
 # TODO: or add support to specify the service as $2 argument (like in add-service.sh).
 candidateDir="$(pwd)"
 
-currentDir="$candidateDir"
-while [[ "$currentDir" != "/" ]]; do
-    if [[ -f "$currentDir/curlman.service.context" ]]; then
-        serviceDir="$currentDir"
-        break;
-    fi
-    currentDir=$(dirname "$currentDir")
-done
-
+serviceDir=$($installDir/misc/resolve-service-dir.sh "$candidateDir")
 if [[ -z "$serviceDir" ]]; then
     echo "ERROR: Cannot create resource. Target directory «$candidateDir» doesn't belong to a service."
     exit 1
