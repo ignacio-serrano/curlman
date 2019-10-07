@@ -15,25 +15,23 @@ if [[ $# -lt 1 ]]; then
     exit 1
 fi
 
-serviceName="$1"
-baseUrl="$2"
+resourcePath="$1"
 
+# TODO: Add support to specify the candidateDir as $2 argument (like in add-service.sh).
+# TODO: or add support to specify the service as $2 argument (like in add-service.sh).
 candidateDir="$(pwd)"
-if [[ $# -ge 3 ]]; then
-    candidateDir=$($installDir/utils/canonicalise-path.sh "$3")
-fi
 
 currentDir="$candidateDir"
 while [[ "$currentDir" != "/" ]]; do
     if [[ -f "$currentDir/curlman.context" ]]; then
-        tgtDir="$currentDir"
+        serviceDir="$currentDir"
         break;
     fi
     currentDir=$(dirname "$currentDir")
 done
 
-if [[ -z "$tgtDir" ]]; then
-    echo "ERROR: Cannot create service. Target directory «$candidateDir» doesn't belong to a curlman tree."
+if [[ -z "$serviceDir" ]]; then
+    echo "ERROR: Cannot create resource. Target directory «$candidateDir» doesn't belong to a service."
     exit 1
 fi
 unset candidateDir
