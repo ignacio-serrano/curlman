@@ -20,7 +20,7 @@ baseUrl="$2"
 
 candidateDir="$(pwd)"
 if [[ $# -ge 3 ]]; then
-    candidateDir=$($installDir/canonicalise-path.sh "$3")
+    candidateDir=$($installDir/utils/canonicalise-path.sh "$3")
 fi
 
 currentDir="$candidateDir"
