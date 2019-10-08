@@ -14,7 +14,6 @@ TODO:
 
 Project layout
 --------------
-Ignore this section for now.
   * `src`: Here it is where source code is.
     * `main`: Here it is where source code meant to be part of the application
               lives.
