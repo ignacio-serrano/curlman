@@ -1,0 +1,4 @@
+Usage: curlman.sh request [--help | <operation file>]
+  --help           : Displays this help.
+  <operation file> : An operation file. Operation files are created by 
+                     "curlman add operation" and are named after an HTTP method.
