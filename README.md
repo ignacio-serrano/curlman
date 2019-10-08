@@ -28,7 +28,10 @@ Project layout
                  logic and may potentially be reused by other applications.
     * `test`: Here it is where the test scripts and other test related files 
               live.
-  * `test.sh`: Runs all scripts in `src/test` but those prefixed with `skip-`.
+  * `test.sh`: Runs all scripts in `src/test` but those prefixed with `skip-`. 
+               If a filename (or several) pattern is passed as parameter, those
+               files will be run regardless of the `skip-` prefix or which
+               directory they are located at.
 
 Notes
 -----
