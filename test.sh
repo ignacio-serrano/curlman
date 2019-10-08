@@ -5,9 +5,7 @@ if [[ $# -gt 0 ]]; then
     done
 else
     thisDir="${0%/*}"
-    for file in $(ls -1p $thisDir/src/test | grep -v /); do
-        if [[ "${file:0:5}" != "skip-" ]]; then
-            $thisDir/src/test/$file
-        fi
+    for file in $(find $thisDir/src/test ! -name 'skip-*' -a -name '*.sh'); do
+        $file
     done
 fi

@@ -7,8 +7,6 @@ TODO:
 -----
   * Should `curlman add resource` allow to specify path parameters?
   * Add a mock server so tests don't have to go against actual github.
-  * Organise tests in subdirectories.
-  * Modify `test.sh` so it runs tests withing subdirectories.
   * Implement `curlman add operation`.
     * Add something actually useful to the `<httpMethod>.sh` script.
 
