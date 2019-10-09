@@ -15,31 +15,40 @@ if [[ $# -lt 1 ]]; then
     exit 1
 fi
 
-resourcePath="$1"
+operationFile="$1"
 
-# TODO: Add support to specify the candidateDir as $2 argument (like in add-service.sh).
-# TODO: or add support to specify the service as $2 argument (like in add-service.sh).
-candidateDir="$(pwd)"
+httpMethod=$(basename "$operationFile")
+serviceDir=$($installDir/misc/resolve-service-dir.sh "$operationFile")
+operationDir=$(dirname "$operationFile")
+operationDir=$($installDir/utils/canonicalise-path.sh "$resourcePath")
+eval resourcePath="\${operationDir#$serviceDir}"
 
-serviceDir=$($installDir/misc/resolve-service-dir.sh "$candidateDir")
-if [[ -z "$serviceDir" ]]; then
-    echo "ERROR: Cannot create resource. Target directory «$candidateDir» doesn't belong to a service."
-    exit 1
-fi
-unset candidateDir
+cfg_editor=vi
+while IFS='=' read -r key value; do
+    printf -v $key "$value"
+done < "$serviceDir/curlman.service.context"
 
-test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: Resolved serviceDir: «$serviceDir»"
+rm "$operationDir"/$httpMethod.response.*
+curl -D "$operationDir/$httpMethod.response.headers.txt" -o "$operationDir/$httpMethod.response.body" -s -X $httpMethod "$cfg_baseUrl/${resourcePath#/}"
 
-if [[ "${resourcePath:0:1}" == "/" ]]; then
-    tgtDir="$serviceDir/${resourcePath#/}"
+findOutMimeType () {
+    sed 1d "$operationDir/$httpMethod.response.headers.txt" | while IFS=':' read -r key value; do
+        if [[ "${key,,}" == "content-type" ]]; then
+            responseContentType=$(echo "$value" | xargs)
+            IFS=';' read -r mimeType encoding <<< $responseContentType
+            echo "$mimeType"
+            return 0
+        fi
+    done
+}
+
+mimeType=$(findOutMimeType)
+if [[ "${mimeType,,}" == "application/json" ]]; then
+    responseBodyFileName="$operationDir/$httpMethod.response.body.json"
 else
-    tgtDir="$(pwd)/${resourcePath#/}"
+    responseBodyFileName="$operationDir/$httpMethod.response.body.txt"
 fi
-test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: tgtDir: «$tgtDir»"
+mv "$operationDir/$httpMethod.response.body" "$responseBodyFileName"
+$cfg_editor "$responseBodyFileName"
 
-$installDir/utils/safe-mkdir.sh "$tgtDir"
-exitCode=$?
-
-if [[ $exitCode -ne 0 ]]; then
-    exit $exitCode
-fi
+exit 0
