@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
-tmpDir="${0%/*}/../../tmp"
+if [[ -z "$curlman_dev_home" ]]; then
+    echo "[$(basename $0)]: ERROR: curlman_dev_home variable not set. Set it to the absolute path of your local working tree."
+    exit 1
+fi
+
+tmpDir="$curlman_dev_home/tmp"
 if [[ ! -e  "$tmpDir" ]]; then
     mkdir "$tmpDir"
 fi
@@ -13,8 +18,7 @@ mkdir "$tmpDir"
 unset debugCurlman
 
 # ACT
-theCurlman="${0%/*}/../main/curlman.sh --version"
-$theCurlman > "$tmpDir/out.txt"
+$curlman_dev_home/src/main/curlman.sh --version > "$tmpDir/out.txt"
 
 # ASSERT
 exitCode=$?
