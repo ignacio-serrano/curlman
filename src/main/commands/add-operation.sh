@@ -9,7 +9,7 @@ case "$1" in
     ;;
 esac
 
-if [[ $# -lt 1 ]]; then
+if [[ $# -lt 1 ]] || [[ "${1:0:1}" == '-' ]]; then
     echo "ERROR: You must specify an HTTP method."
     cat "$installDir/docs/add-operation-usage.txt"
     exit 1
@@ -21,9 +21,24 @@ shift
 
 # TODO: Add support to specify the candidateDir as $3 argument (like in add-service.sh).
 # TODO: or add support to specify the service as $3 argument (like in add-service.sh).
+declare -a queryParams
+queryParamsIdx=0
+unset queryParamFlag
 if [[ $# -ge 1 ]]; then
-    resourcePath="$1"
-    shift
+    for arg in "$@"; do
+        if [[ "$arg" == "--query-parameter" ]]; then
+            queryParamFlag=1
+        elif [[ $queryParamFlag ]]; then
+            queryParams[$queryParamsIdx]=$arg
+            queryParamsIdx=$((queryParamsIdx + 1))
+            unset queryParamFlag
+        else
+            echo "ERROR: Unexpected argument «$arg»."
+            exit 1
+        fi
+    done
+#    resourcePath="$1"
+#    shift
 fi
 
 # TODO: Add implement resource creation on-the-fly.
@@ -41,7 +56,9 @@ test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: Resolved serviceDir: «$se
 
 operationFile="$candidateDir/$httpMethod"
 touch "$operationFile"
-
+for element in "${queryParams[@]}"; do
+    echo "query:$element" >> "$operationFile"
+done
 # Believe it or not, everything written between this command and an EOL would be
 # written to a file.
 #cat >> "$operationScript" << EOL

@@ -8,12 +8,18 @@ tmpDir=$($curlman_dev_home/src/test-utils/init-tmp-dir.sh "$0")
 
 # ARRANGE
 unset debugCurlman
+mkdir "$tmpDir/curlman-root"
+touch "$tmpDir/curlman-root/curlman.context"
+mkdir "$tmpDir/curlman-root/github"
+touch "$tmpDir/curlman-root/github/curlman.service.context"
+echo "cfg_baseUrl=https://api.github.com" >> "$tmpDir/curlman-root/github/curlman.service.context"
+mkdir "$tmpDir/curlman-root/github/users"
 
 tmpDir=$($curlman_dev_home/src/main/utils/canonicalise-path.sh "$tmpDir")
 pushd $tmpDir > /dev/null
 
 # ACT
-$curlman_dev_home/src/main/curlman.sh add operation GET > "$tmpDir/out.txt"
+$curlman_dev_home/src/main/curlman.sh add operation --query-parameter since > "$tmpDir/out.txt"
 exitCode=$?
 popd > /dev/null
 
@@ -24,11 +30,12 @@ if [[ $exitCode -eq 0 ]]; then
 fi
 
 if [[ -f "$tmpDir/GET" ]]; then
-    echo "[$(basename $0)]: FAIL: curlman created GET file «$tmpDir/GET»."
+    echo "[$(basename $0)]: FAIL: curlman created operation file «$tmpDir/GET»."
     exit 1
 fi
 
-echo "ERROR: Cannot create operation. Target directory «$tmpDir» doesn't belong to a service." > "$tmpDir/expected.out.txt"
+echo "ERROR: You must specify an HTTP method." > "$tmpDir/expected.out.txt"
+cat "$curlman_dev_home/src/main/docs/add-operation-usage.txt" >> "$tmpDir/expected.out.txt"
 diff "$tmpDir/out.txt" "$tmpDir/expected.out.txt"
 exitCode=$?
 

@@ -28,7 +28,7 @@ while IFS='=' read -r key value; do
     printf -v $key "$value"
 done < "$serviceDir/curlman.service.context"
 
-rm "$operationDir"/$httpMethod.response.*
+rm -f "$operationDir"/$httpMethod.response.*
 curl -D "$operationDir/$httpMethod.response.headers.txt" -o "$operationDir/$httpMethod.response.body" -s -X $httpMethod "$cfg_baseUrl/${resourcePath#/}"
 
 findOutMimeType () {
