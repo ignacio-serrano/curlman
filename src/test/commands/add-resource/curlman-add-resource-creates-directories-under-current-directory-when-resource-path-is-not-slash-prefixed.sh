@@ -4,23 +4,7 @@ if [[ -z "$curlman_dev_home" ]]; then
     exit 1
 fi
 
-tmpDir="$curlman_dev_home/tmp"
-if [[ ! -e  "$tmpDir" ]]; then
-    mkdir "$tmpDir"
-fi
-tmpDir="$tmpDir/commands"
-if [[ ! -e  "$tmpDir" ]]; then
-    mkdir "$tmpDir"
-fi
-tmpDir="$tmpDir/add-resource"
-if [[ ! -e  "$tmpDir" ]]; then
-    mkdir "$tmpDir"
-fi
-tmpDir="$tmpDir/$(basename $0)"
-if [[ -e  "$tmpDir" ]]; then
-    rm -r "$tmpDir"
-fi
-mkdir "$tmpDir"
+tmpDir=$($curlman_dev_home/src/test-utils/init-tmp-dir.sh "$0")
 
 # ARRANGE
 unset debugCurlman
