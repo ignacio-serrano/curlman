@@ -9,13 +9,25 @@ case "$1" in
     ;;
 esac
 
-if [[ $# -lt 1 ]]; then
+if [[ $# -lt 1 ]] || [[ "${1:0:1}" == '-' ]]; then
     echo "ERROR: You must specify an operation."
     cat "$installDir/docs/request-usage.txt"
     exit 1
 fi
 
 operationFile="$1"
+shift
+
+if [[ $# -ge 1 ]]; then
+    for arg in "$@"; do
+        if [[ "$arg" == "--show-command" ]]; then
+            showCommandFlag=1
+        else
+            echo "ERROR: Unexpected argument «$arg»."
+            exit 1
+        fi
+    done
+fi
 
 httpMethod=$(basename "$operationFile")
 serviceDir=$($installDir/misc/resolve-service-dir.sh "$operationFile")
@@ -28,8 +40,14 @@ while IFS='=' read -r key value; do
     printf -v $key "$value"
 done < "$serviceDir/curlman.service.context"
 
+curlCommand="curl -D \"$operationDir/$httpMethod.response.headers.txt\" -o \"$operationDir/$httpMethod.response.body\" -s -X $httpMethod \"$cfg_baseUrl/${resourcePath#/}\""
+if [[ $showCommandFlag ]]; then
+    echo $curlCommand
+    exit 0
+fi
+
 rm -f "$operationDir"/$httpMethod.response.*
-curl -D "$operationDir/$httpMethod.response.headers.txt" -o "$operationDir/$httpMethod.response.body" -s -X $httpMethod "$cfg_baseUrl/${resourcePath#/}"
+eval "$curlCommand"
 
 findOutMimeType () {
     sed 1d "$operationDir/$httpMethod.response.headers.txt" | while IFS=':' read -r key value; do
