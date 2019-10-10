@@ -10,8 +10,6 @@ TODO:
   * Enable configuring the default body editor.
   * Add unit tests for `curlman request` (once I find some API with a 
     predictable response).
-  * Fix `curlman request`. The request path doesn't seem to be being resolved 
-    relative to the service root.
   * Implement `curlman add operation`.
     * Add something actually useful to the `<httpMethod>` file.
 

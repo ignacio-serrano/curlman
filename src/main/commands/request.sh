@@ -32,7 +32,7 @@ fi
 httpMethod=$(basename "$operationFile")
 serviceDir=$($installDir/misc/resolve-service-dir.sh "$operationFile")
 operationDir=$(dirname "$operationFile")
-operationDir=$($installDir/utils/canonicalise-path.sh "$resourcePath")
+operationDir=$($installDir/utils/canonicalise-path.sh "$operationDir")
 eval resourcePath="\${operationDir#$serviceDir}"
 
 cfg_editor=vi

@@ -16,12 +16,9 @@ echo "cfg_baseUrl=https://api.github.com" >> "$tmpDir/curlman-root/github/curlma
 mkdir "$tmpDir/curlman-root/github/users"
 touch "$tmpDir/curlman-root/github/users/GET"
 
-pushd "$tmpDir/curlman-root/github/users" > /dev/null
-
 # ACT
-$curlman_dev_home/src/main/curlman.sh request ./GET --show-command > "$tmpDir/out.txt"
+$curlman_dev_home/src/main/curlman.sh request "$tmpDir/curlman-root/github/users/GET" --show-command > "$tmpDir/out.txt"
 exitCode=$?
-popd > /dev/null
 
 # ASSERT
 if [[ $exitCode -ne 0 ]]; then

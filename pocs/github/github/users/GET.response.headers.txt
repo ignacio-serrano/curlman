@@ -1,12 +1,12 @@
 HTTP/1.1 200 OK
-Date: Thu, 10 Oct 2019 08:22:50 GMT
+Date: Thu, 10 Oct 2019 10:48:04 GMT
 Content-Type: application/json; charset=utf-8
 Content-Length: 29955
 Server: GitHub.com
 Status: 200 OK
 X-RateLimit-Limit: 60
-X-RateLimit-Remaining: 59
-X-RateLimit-Reset: 1570699370
+X-RateLimit-Remaining: 58
+X-RateLimit-Reset: 1570708020
 Cache-Control: public, max-age=60, s-maxage=60
 Vary: Accept
 ETag: "b2914c6ac24c7b4a42d06329f9bcaee7"
@@ -21,5 +21,5 @@ X-XSS-Protection: 1; mode=block
 Referrer-Policy: origin-when-cross-origin, strict-origin-when-cross-origin
 Content-Security-Policy: default-src 'none'
 Vary: Accept-Encoding
-X-GitHub-Request-Id: DD0D:1042:F3AD352:12777AD1:5D9EEA5A
+X-GitHub-Request-Id: E2AE:103E:E338E2:1139755:5D9F0C64
 
