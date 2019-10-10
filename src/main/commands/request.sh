@@ -19,14 +19,26 @@ operationFile="$1"
 shift
 
 if [[ $# -ge 1 ]]; then
+    declare -A queryParamsFromArgs
     for arg in "$@"; do
         if [[ "$arg" == "--show-command" ]]; then
             showCommandFlag=1
+        elif [[ "$arg" == "--query-parameter" ]]; then
+            queryParamFlag=1
+        elif [[ $queryParamFlag ]]; then
+            IFS='=' read -r name value <<< "$arg"
+            queryParamsFromArgs[$name]="$value"
+            unset queryParamFlag
         else
             echo "ERROR: Unexpected argument «$arg»."
             exit 1
         fi
     done
+    test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: queryParamsFromArgs[@]: «${queryParamsFromArgs[@]}»"
+    if [[ ${#queryParamsFromArgs[@]} -eq 0 ]]; then
+        test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: unsetting queryParamsFromArgs"
+        unset queryParamsFromArgs
+    fi
 fi
 
 httpMethod=$(basename "$operationFile")
@@ -41,6 +53,13 @@ while IFS='=' read -r key value; do
 done < "$serviceDir/curlman.service.context"
 
 curlCommand="curl -D \"$operationDir/$httpMethod.response.headers.txt\" -o \"$operationDir/$httpMethod.response.body\" -s -X $httpMethod \"$cfg_baseUrl/${resourcePath#/}\""
+if [[ ${#queryParamsFromArgs[@]} -gt 0 ]]; then
+    test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: There are query params!"
+    curlCommand="$curlCommand -G"
+    for name in "${!queryParamsFromArgs[@]}"; do
+        curlCommand="$curlCommand --data-urlencode $name=${queryParamsFromArgs[$name]}"
+    done
+fi
 if [[ $showCommandFlag ]]; then
     echo $curlCommand
     exit 0

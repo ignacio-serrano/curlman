@@ -11,6 +11,7 @@ TODO:
   * Modify unit tests for `curlman request` (once I find some API with a 
     predictable response).
   * Implement `curlman add operation`.
+  * Fix debug pattern so traces are sent to a file instead of stdout.
   * Implement passing query parameters to `curlman request`.
 
 Project layout

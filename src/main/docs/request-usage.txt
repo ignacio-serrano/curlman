@@ -1,6 +1,8 @@
-Usage: curlman.sh request [--help | <operation file> [--show-command]]
+Usage: curlman.sh request [--help | <operation file> [--show-command] {--query-parameter <name>=<value>}]
   --help           : Displays this help.
   <operation file> : An operation file. Operation files are created by 
                      "curlman add operation" and are named after an HTTP method.
   --show-command   : Display the curl command instead of executing it. Useful 
                      for testing and debugging purposes.
+  --query-parameter <name>=<value> : Additional query parameter to include in 
+                                     the request.

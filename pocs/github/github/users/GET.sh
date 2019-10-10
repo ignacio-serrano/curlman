@@ -1,24 +1,24 @@
 #!/usr/bin/env bash
-thisDir="${0%/*}"
-
-if [[ "${thisDir:0:2}" == "./"]]; then
-    scriptDir=$(pwd)/${thisDir#./}
-elif [[ "${thisDir:0:1}" != "/" ]]; then
-    scriptDir=$(pwd)/${thisDir}
+if [[ -z "$curlman_dev_home" ]]; then
+    echo "[$(basename $0)]: ERROR: curlman_dev_home variable not set. Set it to the absolute path of your local working tree."
+    exit 1
 fi
+
+scriptDir=$($curlman_dev_home/src/main/utils/canonicalise-path.sh "${0%/*}")
 test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: scriptDir: «$scriptDir»"
 
 httpMethod=$(basename $0)
 httpMethod=${httpMethod%.sh}
 test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: httpMethod: «$httpMethod»"
 
-currentDir=$thisDir
+currentDir=$scriptDir
 while [[ "$currentDir" != "/" ]]; do
     if [[ -f "$currentDir/curlman.service.context" ]]; then
         serviceDir="$currentDir"
         break;
     fi
     currentDir=$(dirname "$currentDir")
+    test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: currentDir: «$currentDir»"
 done
 test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: Resolved serviceDir: «$serviceDir»"
 
@@ -69,5 +69,41 @@ for element in "${array[@]}"; do
     fi
 done
 
-test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: curl command run: «curl -s -X $httpMethod \"$cfg_baseUrl/${actualResourcePath#/}\"»"
-curl -s -X $httpMethod "$cfg_baseUrl/${actualResourcePath#/}"
+curlCommand="curl -s -X $httpMethod \"$cfg_baseUrl/${actualResourcePath#/}\""
+if [[ $# -ge 1 ]]; then
+    curlCommand="$curlCommand -G"
+    declare -A queryParams
+    while IFS=':' read -r paramType name; do
+        test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: paramType: «$paramType»"
+        test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: name: «$name»"
+        if [[ "$paramType" == "query" ]]; then
+            test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: paramType goes in"
+            queryParams[$name]=" "
+        fi
+    done < "$scriptDir/$httpMethod"
+    test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: queryParams: «${!queryParams[@]}»"
+
+    for arg in "$@"; do
+        test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: arg: «$arg»"
+        test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: {arg:0:8}: «${arg:0:8}»"
+        test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: {arg:8}: «${arg:8}»"
+        if [[ "${arg:0:8}" == "--query:" ]]; then
+            IFS='=' read -r name value <<< "${arg:8}"
+            test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: name: «$name»"
+            test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: value: «$value»"
+            for k in "${!queryParams[@]}"; do
+                if [[ "$k" == "$name" ]]; then
+                    queryParams[$k]="$value"
+                fi
+            done
+        fi
+    done
+    test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: queryParams: «${queryParams[@]}»"
+fi
+
+for k in "${!queryParams[@]}"; do
+    curlCommand="$curlCommand --data-urlencode $name=${queryParams[$k]}"
+done
+
+test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: curl command run: «$curlCommand»"
+eval "$curlCommand"
