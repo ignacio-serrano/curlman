@@ -8,14 +8,9 @@ tmpDir=$($curlman_dev_home/src/test-utils/init-tmp-dir.sh "$0")
 
 # ARRANGE
 unset debugCurlman
-mkdir "$tmpDir/curlman-root"
-touch "$tmpDir/curlman-root/curlman.context"
-mkdir "$tmpDir/curlman-root/github"
-touch "$tmpDir/curlman-root/github/curlman.service.context"
-echo "cfg_baseUrl=https://api.github.com" >> "$tmpDir/curlman-root/github/curlman.service.context"
-mkdir "$tmpDir/curlman-root/github/users"
+theServiceDir=$($curlman_dev_home/src/test-utils/given/a-github-service-dir.sh "$tmpDir")
+mkdir "$theServiceDir/users"
 
-tmpDir=$($curlman_dev_home/src/main/utils/canonicalise-path.sh "$tmpDir")
 pushd $tmpDir > /dev/null
 
 # ACT

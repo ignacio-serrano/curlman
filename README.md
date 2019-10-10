@@ -8,10 +8,10 @@ TODO:
   * Should `curlman add resource` allow to specify path parameters?
   * Add a mock server so tests don't have to go against actual github.
   * Enable configuring the default body editor.
-  * Add unit tests for `curlman request` (once I find some API with a 
+  * Modify unit tests for `curlman request` (once I find some API with a 
     predictable response).
   * Implement `curlman add operation`.
-    * Add something actually useful to the `<httpMethod>` file.
+  * Implement passing query parameters to `curlman request`.
 
 Project layout
 --------------

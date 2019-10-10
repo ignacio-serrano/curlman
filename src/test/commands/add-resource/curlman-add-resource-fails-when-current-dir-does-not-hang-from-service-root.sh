@@ -9,7 +9,6 @@ tmpDir=$($curlman_dev_home/src/test-utils/init-tmp-dir.sh "$0")
 # ARRANGE
 unset debugCurlman
 
-tmpDir=$($curlman_dev_home/src/main/utils/canonicalise-path.sh "$tmpDir")
 pushd $tmpDir > /dev/null
 
 # ACT

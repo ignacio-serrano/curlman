@@ -8,10 +8,9 @@ tmpDir=$($curlman_dev_home/src/test-utils/init-tmp-dir.sh "$0")
 
 # ARRANGE
 unset debugCurlman
-mkdir "$tmpDir/curlman-root"
-touch "$tmpDir/curlman-root/curlman.context"
+theCurlmanRootDir=$($curlman_dev_home/src/test-utils/given/a-curlman-root-dir.sh "$tmpDir")
 
-pushd $tmpDir/curlman-root > /dev/null
+pushd "$theCurlmanRootDir" > /dev/null
 
 # ACT
 $curlman_dev_home/src/main/curlman.sh add service github https://api.github.com
@@ -24,18 +23,18 @@ if [[ $exitCode -ne 0 ]]; then
     exit 1
 fi
 
-if [[ ! -d "$tmpDir/curlman-root/github" ]]; then
-    echo "[$(basename $0)]: FAIL: curlman did not create service directory «$tmpDir/curlman-root/github»."
+if [[ ! -d "$theCurlmanRootDir/github" ]]; then
+    echo "[$(basename $0)]: FAIL: curlman did not create service directory «$theCurlmanRootDir/github»."
     exit 1
 fi
 
-if [[ ! -f "$tmpDir/curlman-root/github/curlman.service.context" ]]; then
-    echo "[$(basename $0)]: FAIL: curlman did not create curlman.service.context file «$tmpDir/curlman-root/github/curlman.service.context»."
+if [[ ! -f "$theCurlmanRootDir/github/curlman.service.context" ]]; then
+    echo "[$(basename $0)]: FAIL: curlman did not create curlman.service.context file «$theCurlmanRootDir/github/curlman.service.context»."
     exit 1
 fi
 
 echo "cfg_baseUrl=https://api.github.com" > "$tmpDir/expected.curlman.service.context"
-diff "$tmpDir/curlman-root/github/curlman.service.context" "$tmpDir/expected.curlman.service.context"
+diff "$theCurlmanRootDir/github/curlman.service.context" "$tmpDir/expected.curlman.service.context"
 exitCode=$?
 
 if [[ $exitCode -ne 0 ]]; then

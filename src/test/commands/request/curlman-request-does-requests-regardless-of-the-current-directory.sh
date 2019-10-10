@@ -8,16 +8,12 @@ tmpDir=$($curlman_dev_home/src/test-utils/init-tmp-dir.sh "$0")
 
 # ARRANGE
 unset debugCurlman
-mkdir "$tmpDir/curlman-root"
-touch "$tmpDir/curlman-root/curlman.context"
-mkdir "$tmpDir/curlman-root/github"
-touch "$tmpDir/curlman-root/github/curlman.service.context"
-echo "cfg_baseUrl=https://api.github.com" >> "$tmpDir/curlman-root/github/curlman.service.context"
-mkdir "$tmpDir/curlman-root/github/users"
-touch "$tmpDir/curlman-root/github/users/GET"
+theServiceDir=$($curlman_dev_home/src/test-utils/given/a-github-service-dir.sh "$tmpDir")
+mkdir "$theServiceDir/users"
+touch "$theServiceDir/users/GET"
 
 # ACT
-$curlman_dev_home/src/main/curlman.sh request "$tmpDir/curlman-root/github/users/GET" --show-command > "$tmpDir/out.txt"
+$curlman_dev_home/src/main/curlman.sh request "$theServiceDir/users/GET" --show-command > "$tmpDir/out.txt"
 exitCode=$?
 
 # ASSERT

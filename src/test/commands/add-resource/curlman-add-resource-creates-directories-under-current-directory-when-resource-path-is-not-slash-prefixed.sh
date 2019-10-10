@@ -8,15 +8,10 @@ tmpDir=$($curlman_dev_home/src/test-utils/init-tmp-dir.sh "$0")
 
 # ARRANGE
 unset debugCurlman
-mkdir "$tmpDir/curlman-root"
-touch "$tmpDir/curlman-root/curlman.context"
-mkdir "$tmpDir/curlman-root/github"
-touch "$tmpDir/curlman-root/github/curlman.service.context"
-echo "cfg_baseUrl=https://api.github.com" >> "$tmpDir/curlman-root/github/curlman.service.context"
-mkdir "$tmpDir/curlman-root/github/users"
+theServiceDir=$($curlman_dev_home/src/test-utils/given/a-github-service-dir.sh "$tmpDir")
+mkdir "$theServiceDir/users"
 
-tmpDir=$($curlman_dev_home/src/main/utils/canonicalise-path.sh "$tmpDir")
-pushd "$tmpDir/curlman-root/github/users" > /dev/null
+pushd "$theServiceDir/users" > /dev/null
 
 # ACT
 $curlman_dev_home/src/main/curlman.sh add resource {username} > "$tmpDir/out.txt"
@@ -29,8 +24,8 @@ if [[ $exitCode -ne 0 ]]; then
     exit 1
 fi
 
-if [[ ! -d "$tmpDir/curlman-root/github/users/{username}" ]]; then
-    echo "[$(basename $0)]: FAIL: curlman did not create resource directory «$tmpDir/curlman-root/github/users/{username}»."
+if [[ ! -d "$theServiceDir/users/{username}" ]]; then
+    echo "[$(basename $0)]: FAIL: curlman did not create resource directory «$theServiceDir/users/{username}»."
     exit 1
 fi
 

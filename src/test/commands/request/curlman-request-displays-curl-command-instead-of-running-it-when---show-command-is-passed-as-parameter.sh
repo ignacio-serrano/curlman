@@ -8,15 +8,11 @@ tmpDir=$($curlman_dev_home/src/test-utils/init-tmp-dir.sh "$0")
 
 # ARRANGE
 unset debugCurlman
-mkdir "$tmpDir/curlman-root"
-touch "$tmpDir/curlman-root/curlman.context"
-mkdir "$tmpDir/curlman-root/github"
-touch "$tmpDir/curlman-root/github/curlman.service.context"
-echo "cfg_baseUrl=https://api.github.com" >> "$tmpDir/curlman-root/github/curlman.service.context"
-mkdir "$tmpDir/curlman-root/github/users"
-touch "$tmpDir/curlman-root/github/users/GET"
+theServiceDir=$($curlman_dev_home/src/test-utils/given/a-github-service-dir.sh "$tmpDir")
+mkdir "$theServiceDir/users"
+touch "$theServiceDir/users/GET"
 
-pushd "$tmpDir/curlman-root/github/users" > /dev/null
+pushd "$theServiceDir/users" > /dev/null
 
 # ACT
 $curlman_dev_home/src/main/curlman.sh request ./GET --show-command > "$tmpDir/out.txt"
@@ -29,7 +25,7 @@ if [[ $exitCode -ne 0 ]]; then
     exit 1
 fi
 
-echo "curl -D \"$tmpDir/curlman-root/github/users/GET.response.headers.txt\" -o \"$tmpDir/curlman-root/github/users/GET.response.body\" -s -X GET \"https://api.github.com/users\"" > "$tmpDir/expected.out.txt"
+echo "curl -D \"$theServiceDir/users/GET.response.headers.txt\" -o \"$theServiceDir/users/GET.response.body\" -s -X GET \"https://api.github.com/users\"" > "$tmpDir/expected.out.txt"
 diff "$tmpDir/out.txt" "$tmpDir/expected.out.txt"
 exitCode=$?
 

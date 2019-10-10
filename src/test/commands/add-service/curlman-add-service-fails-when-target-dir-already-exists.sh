@@ -8,11 +8,9 @@ tmpDir=$($curlman_dev_home/src/test-utils/init-tmp-dir.sh "$0")
 
 # ARRANGE
 unset debugCurlman
-mkdir "$tmpDir/curlman-root"
-touch "$tmpDir/curlman-root/curlman.context"
-mkdir "$tmpDir/curlman-root/github"
+theCurlmanRootDir=$($curlman_dev_home/src/test-utils/given/a-curlman-root-dir.sh "$tmpDir")
+mkdir "$theCurlmanRootDir/github"
 
-tmpDir=$($curlman_dev_home/src/main/utils/canonicalise-path.sh "$tmpDir")
 pushd $tmpDir/curlman-root > /dev/null
 
 # ACT
@@ -26,7 +24,7 @@ if [[ $exitCode -eq 0 ]]; then
     exit 1
 fi
 
-echo "ERROR: Cannot create service «github». «$tmpDir/curlman-root/github» already exists." > "$tmpDir/expected.out.txt"
+echo "ERROR: Cannot create service «github». «$theCurlmanRootDir/github» already exists." > "$tmpDir/expected.out.txt"
 diff "$tmpDir/out.txt" "$tmpDir/expected.out.txt"
 exitCode=$?
 
