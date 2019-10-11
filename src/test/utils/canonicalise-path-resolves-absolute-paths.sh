@@ -5,7 +5,6 @@ if [[ -z "$curlman_dev_home" ]]; then
 fi
 
 # ARRANGE
-unset debugCurlman
 
 pushd ${0%/*} > /dev/null
 thisDir=$(pwd)

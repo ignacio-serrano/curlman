@@ -7,7 +7,6 @@ fi
 tmpDir=$($curlman_dev_home/src/test-utils/init-tmp-dir.sh "$0")
 
 # ARRANGE
-unset debugCurlman
 
 # ACT
 $curlman_dev_home/src/main/curlman.sh --version > "$tmpDir/out.txt"

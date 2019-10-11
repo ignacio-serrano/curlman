@@ -7,7 +7,6 @@ fi
 tmpDir=$($curlman_dev_home/src/test-utils/init-tmp-dir.sh "$0")
 
 # ARRANGE
-unset debugCurlman
 theCurlmanRootDir=$($curlman_dev_home/src/test-utils/given/a-curlman-root-dir.sh "$tmpDir")
 mkdir "$theCurlmanRootDir/github"
 

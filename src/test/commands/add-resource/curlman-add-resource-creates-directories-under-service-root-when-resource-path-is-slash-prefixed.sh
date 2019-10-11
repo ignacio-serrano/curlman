@@ -7,7 +7,6 @@ fi
 tmpDir=$($curlman_dev_home/src/test-utils/init-tmp-dir.sh "$0")
 
 # ARRANGE
-unset debugCurlman
 theServiceDir=$($curlman_dev_home/src/test-utils/given/a-github-service-dir.sh "$tmpDir")
 mkdir "$theServiceDir/some"
 mkdir "$theServiceDir/some/other"

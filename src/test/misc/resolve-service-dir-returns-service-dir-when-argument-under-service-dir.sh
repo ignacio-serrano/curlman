@@ -7,7 +7,6 @@ fi
 tmpDir=$($curlman_dev_home/src/test-utils/init-tmp-dir.sh "$0")
 
 # ARRANGE
-unset debugCurlman
 mkdir "$tmpDir/curlman-root"
 touch "$tmpDir/curlman-root/curlman.context"
 mkdir "$tmpDir/curlman-root/github"
