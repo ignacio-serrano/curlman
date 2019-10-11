@@ -5,14 +5,13 @@ A command line utility that enables using curl commands in more user friendly wa
 
 TODO:
 -----
-  * Should `curlman add resource` allow to specify path parameters?
+  * Should `curlman add resource` allow to specify path parameters? YES
   * Add a mock server so tests don't have to go against actual github.
   * Enable configuring the default body editor.
   * Modify unit tests for `curlman request` (once I find some API with a 
     predictable response).
   * Implement `curlman add operation`.
-  * Fix debug pattern so traces are sent to a file instead of stdout.
-  * Implement passing query parameters to `curlman request`.
+  * Implement reading query parameters from a file in `curlman request`.
 
 Project layout
 --------------
@@ -22,18 +21,33 @@ Project layout
       * `curlman.sh`: The application entry point.
       * `commands`: `curlman` subcommands are all implemented in a different 
                     script each. Here they are all of them.
-      * `docs`: At the moment, just help files that displayed to the user under
-                different circumstances.
+      * `docs`: At the moment, just help files that are displayed to the user 
+                under different circumstances.
+      * `misc`: Scripts used by `curlman` which are common to several commands.
       * `resources`: Files that `curlman` may copy as part of its logic, but 
                      doesn't run itself.
       * `utils`: Scripts used by `curlman` that do not really belong to its own
                  logic and may potentially be reused by other applications.
     * `test`: Here it is where the test scripts and other test related files 
               live.
+    * `test-utils`: Scripts used by the tests (which aren't tests themselves).
   * `test.sh`: Runs all scripts in `src/test` but those prefixed with `skip-`. 
                If a filename (or several) pattern is passed as parameter, those
                files will be run regardless of the `skip-` prefix or which
                directory they are located at.
+
+Running tests
+-------------
+Before running any test, you'll have to set the variable `curlman_dev_home`. It
+has to contain the absolute path to this directory (the working tree root).
+This is necessary for the tests to be able to call different scripts in the 
+project.
+
+Logs
+----
+To enable logging, set the variable `curlman_log` before running `curlman` (or
+its tests). Its value should be the absolute path to a file (existent or not)
+in an **EXISTENT** directory. Logs will be written to it.
 
 Notes
 -----

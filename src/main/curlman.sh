@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: Args: «$@»"
+test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: Args: «$@»" >> "$curlman_log"
 
 # Indentifies curlman installation directory.
 # TODO: Turn this into a function.
 installDir="${0%/*}"
-test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: installDir: «$installDir»"
+test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: installDir: «$installDir»" >> "$curlman_log"
 export installDir=$($installDir/utils/canonicalise-path.sh "$installDir")
-test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: Resolved installDir: «$installDir»"
+test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: Resolved installDir: «$installDir»" >> "$curlman_log"
 
 if [[ $# -eq 0 ]]; then
     cat "$installDir/docs/usage.txt"

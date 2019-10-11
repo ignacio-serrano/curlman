@@ -1,23 +1,22 @@
 #!/usr/bin/env bash
-#test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: Args: «$@»"
+test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: Args: «$@»" >> "$curlman_log"
 
 thePath="$1"
 if [[ "${thePath:0:2}" == '..' ]]; then
-    #test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: thePath is '..' relative."
+    test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: thePath is '..' relative." >> "$curlman_log"
     auxPath="$(pwd)"
     auxPath="$(dirname $auxPath)"
     thePath="$auxPath${thePath#..}"
 elif [[ "${thePath:0:1}" == '.' ]]; then
-    #test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: thePath is '.' relative."
+    test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: thePath is '.' relative." >> "$curlman_log"
     thePath="$(pwd)${thePath#.}"
 elif [[ "${thePath:0:1}" == "/" ]]; then
-    #test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: thePath is absolute."
-    :
+    test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: thePath is absolute." >> "$curlman_log"
 else
-    #test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: thePath is relative."
+    test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: thePath is relative." >> "$curlman_log"
     thePath="$(pwd)/${thePath}"
 fi
-#test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: Absolutised path: «$thePath»"
+test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: Absolutised path: «$thePath»" >> "$curlman_log"
 
 currentPath=''
 IFS='/' read -r -a array <<< ${thePath#/}

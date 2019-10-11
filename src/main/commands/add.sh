@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: Args: «$@»"
-test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: installDir: «$installDir»"
+test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: Args: «$@»" >> "$curlman_log"
+test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: installDir: «$installDir»" >> "$curlman_log"
 
 if [[ $# -eq 0 ]]; then
     cat "$installDir/docs/add-usage.txt"

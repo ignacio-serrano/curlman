@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: Args: «$@»"
+test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: Args: «$@»" >> "$curlman_log"
 
 case "$1" in
     '--help')

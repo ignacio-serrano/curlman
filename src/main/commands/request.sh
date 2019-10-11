@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: Args: «$@»"
-test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: installDir: «$installDir»"
+test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: Args: «$@»" >> "$curlman_log"
+test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: installDir: «$installDir»" >> "$curlman_log"
 
 case "$1" in
     '--help')
@@ -34,9 +34,9 @@ if [[ $# -ge 1 ]]; then
             exit 1
         fi
     done
-    test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: queryParamsFromArgs[@]: «${queryParamsFromArgs[@]}»"
+    test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: queryParamsFromArgs[@]: «${queryParamsFromArgs[@]}»" >> "$curlman_log"
     if [[ ${#queryParamsFromArgs[@]} -eq 0 ]]; then
-        test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: unsetting queryParamsFromArgs"
+        test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: unsetting queryParamsFromArgs" >> "$curlman_log"
         unset queryParamsFromArgs
     fi
 fi
@@ -54,7 +54,7 @@ done < "$serviceDir/curlman.service.context"
 
 curlCommand="curl -D \"$operationDir/$httpMethod.response.headers.txt\" -o \"$operationDir/$httpMethod.response.body\" -s -X $httpMethod \"$cfg_baseUrl/${resourcePath#/}\""
 if [[ ${#queryParamsFromArgs[@]} -gt 0 ]]; then
-    test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: There are query params!"
+    test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: There are query params!" >> "$curlman_log"
     curlCommand="$curlCommand -G"
     for name in "${!queryParamsFromArgs[@]}"; do
         curlCommand="$curlCommand --data-urlencode $name=${queryParamsFromArgs[$name]}"

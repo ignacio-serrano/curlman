@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: Args: «$@»"
-test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: installDir: «$installDir»"
+test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: Args: «$@»" >> "$curlman_log"
+test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: installDir: «$installDir»" >> "$curlman_log"
 
 case "$1" in
     '--help')
@@ -16,7 +16,7 @@ if [[ $# -lt 1 ]] || [[ "${1:0:1}" == '-' ]]; then
 fi
 
 httpMethod=$(echo "$1" | tr '[:lower:]' '[:upper:]')
-test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: httpMethod: «$httpMethod»"
+test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: httpMethod: «$httpMethod»" >> "$curlman_log"
 shift
 
 # TODO: Add support to specify the candidateDir as $3 argument (like in add-service.sh).
@@ -52,7 +52,7 @@ if [[ -z "$serviceDir" ]]; then
 fi
 #unset candidateDir
 
-test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: Resolved serviceDir: «$serviceDir»"
+test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: Resolved serviceDir: «$serviceDir»" >> "$curlman_log"
 
 operationFile="$candidateDir/$httpMethod"
 touch "$operationFile"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: Args: «$@»"
-test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: installDir: «$installDir»"
+test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: Args: «$@»" >> "$curlman_log"
+test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: installDir: «$installDir»" >> "$curlman_log"
 
 case "$1" in
     '--help')
@@ -39,7 +39,7 @@ fi
 unset candidateDir
 
 tgtDir="$tgtDir/$serviceName"
-test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: Resolved tgtDir: «$tgtDir»"
+test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: Resolved tgtDir: «$tgtDir»" >> "$curlman_log"
 
 # TODO: Enable overwritting of file/directory with flag (perhaps -f).
 if [[ -e "$tgtDir" ]]; then

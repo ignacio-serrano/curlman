@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: Args: «$@»"
-test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: installDir: «$installDir»"
+test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: Args: «$@»" >> "$curlman_log"
+test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: installDir: «$installDir»" >> "$curlman_log"
 
 case "$1" in
     '--help')
@@ -28,14 +28,14 @@ if [[ -z "$serviceDir" ]]; then
 fi
 unset candidateDir
 
-test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: Resolved serviceDir: «$serviceDir»"
+test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: Resolved serviceDir: «$serviceDir»" >> "$curlman_log"
 
 if [[ "${resourcePath:0:1}" == "/" ]]; then
     tgtDir="$serviceDir/${resourcePath#/}"
 else
     tgtDir="$(pwd)/${resourcePath#/}"
 fi
-test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: tgtDir: «$tgtDir»"
+test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: tgtDir: «$tgtDir»" >> "$curlman_log"
 
 $installDir/utils/safe-mkdir.sh "$tgtDir"
 exitCode=$?

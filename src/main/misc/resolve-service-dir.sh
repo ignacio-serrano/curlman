@@ -2,11 +2,11 @@
 # Given a path, returns the closest parent directory that contains a file 
 # named curlman.service.context. If there isn't any, returns an empty string.
 # Requires installDir to be set before calling.
-#test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: Args: «$@»"
-#test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: installDir: «$installDir»"
+test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: Args: «$@»" >> "$curlman_log"
+test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: installDir: «$installDir»" >> "$curlman_log"
 
 thePath=$($installDir/utils/canonicalise-path.sh "$1")
-#test $debugCurlman && echo "[DEBUG]:[$(basename $0)]: thePath: «$thePath»"
+test -n "$curlman_log" && echo "[DEBUG]:[$(basename $0)]: thePath: «$thePath»" >> "$curlman_log"
 
 currentDir="$thePath"
 while [[ "$currentDir" != "/" ]]; do
