@@ -18,7 +18,7 @@ if [[ $exitCode -eq 0 ]]; then
     exit 1
 fi
 
-echo "ERROR: You must specify an operation." > "$tmpDir/expected.out.txt"
+echo "ERROR: You must specify an operation file." > "$tmpDir/expected.out.txt"
 cat "$curlman_dev_home/src/main/docs/request-usage.txt" >> "$tmpDir/expected.out.txt"
 diff "$tmpDir/out.txt" "$tmpDir/expected.out.txt"
 exitCode=$?

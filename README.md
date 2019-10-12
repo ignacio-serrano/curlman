@@ -11,7 +11,8 @@ TODO:
   * Modify unit tests for `curlman request` (once I find some API with a 
     predictable response).
   * Implement `curlman add operation`.
-  * Implement reading query parameters from a file in `curlman request`.
+  * Document `operation file` in `request.usage.txt`.
+  * Implement creating files with query parameters.
 
 Project layout
 --------------
